@@ -19,7 +19,7 @@ def default_ppo_config():
             epochs=100,
             total_steps=10000,
             batch_size=32,
-            checkpoint_interval=10000,
+            checkpoint_interval=1e9,
             eval_interval=100,
             pipeline="PromptPipeline",
             trainer="AcceleratePPOTrainer",
