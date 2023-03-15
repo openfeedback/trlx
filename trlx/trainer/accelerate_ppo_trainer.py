@@ -131,7 +131,7 @@ class AcceleratePPOTrainer(AccelerateRLTrainer):
 
         return from_fn(
             config.model.model_path,
-            cache_dir=config.model.cache_dir
+            cache_dir=config.model.cache_dir,
             num_layers_unfrozen=config.model.num_layers_unfrozen,
         )
 
