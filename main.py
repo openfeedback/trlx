@@ -6,6 +6,85 @@ from torch.utils.data import Dataset
 from datasets import load_dataset
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
+from typing import Iterator, TypeVar
+
+T = TypeVar("T")
+
+
+def get_superhf_prompts(dataset_name: str, split: str = "train") -> list[str]:
+    """
+    Get a list of prompts from a dataset.
+    Args:
+        dataset_name: The name of the dataset to load. One of:
+            - 'anthropic-red-team'
+        split: The split of the dataset to load.
+    Returns:
+        A list of prompts.
+    """
+    # Load the appropriate dataset then convert to a list of prompts
+    prompts: list[str] = []
+    if dataset_name == "anthropic-red-team":
+        dataset = load_dataset(
+            "Anthropic/hh-rlhf",
+            data_dir="red-team-attempts",
+            split=split,
+            keep_in_memory=False,
+        )
+        prompts.extend(
+            [
+                dict(row)["transcript"].split("\n\nAssistant:")[0] + "\n\nAssistant:"
+                for row in dataset
+            ]
+        )
+    elif dataset_name == "openai/webgpt_comparisons":
+        dataset = load_dataset(
+            dataset_name,
+            split=split,
+            keep_in_memory=False,
+        )
+        prompts.extend(
+            [
+                "\n\nHuman: " + row["question"]["full_text"] + "\n\nAssistant:"
+                for row in dataset
+            ]
+        )
+    elif dataset_name == "anthropic-harmless-base":
+        dataset = load_dataset(
+            "Anthropic/hh-rlhf",
+            data_dir="harmless-base",
+            split=split,
+            keep_in_memory=False,
+        )
+        prompts.extend(
+            [
+                row["chosen"].split("\n\nAssistant:")[0] + "\n\nAssistant:"
+                for row in dataset
+            ]
+        )
+    elif dataset_name == "anthropic-helpful-base":
+        dataset = load_dataset(
+            "Anthropic/hh-rlhf",
+            data_dir="helpful-base",
+            split=split,
+            keep_in_memory=False,
+        )
+        prompts.extend(
+            [
+                row["chosen"].split("\n\nAssistant:")[0] + "\n\nAssistant:"
+                for row in dataset
+            ]
+        )
+    elif dataset_name == "mock":
+        prompts.extend(
+            [
+                f"{i}\n\nHuman: ...\n\nAssistant: Sphinx of black quartz, judge my vow."
+                for i in range(50000)
+            ]
+        )
+    else:
+        raise ValueError(f"Unknown dataset: {dataset_name}")
+
+    return prompts
 
 class RewardFunction:
     def __init__(self, device, reward_model_tokenizer, reward_model):
@@ -41,7 +120,11 @@ if __name__ == '__main__':
     reward_fn = RewardFunction(device, tokenizer, rank_model)
 
     dataset = load_dataset("Anthropic/hh-rlhf", data_dir="red-team-attempts", split='train', keep_in_memory=False,)
-    prompts = [dict(row)["transcript"].split("\n\nAssistant:")[0] + "\n\nAssistant:" for row in dataset]
+    prompts = []
+    for dataset_name in ("anthropic-red-team", "openai/webgpt_comparisons", "anthropic-helpful-base", "mock"):
+        prompts += get_superhf_prompts(dataset_name)
+
+    # prompts = [dict(row)["transcript"].split("\n\nAssistant:")[0] + "\n\nAssistant:" for row in dataset]
     
     enable_progress_bar()
     trainer = trlx.train(config=config, reward_fn=reward_fn, prompts=prompts) 
