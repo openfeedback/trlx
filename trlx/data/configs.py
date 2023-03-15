@@ -68,7 +68,7 @@ class ModelConfig:
     model_arch_type: str = "causal"
     num_layers_unfrozen: int = -1
     delta_kwargs: Optional[Dict[str, Any]] = None
-    cache_dir: str
+    cache_dir: str = ''
 
     @classmethod
     def from_dict(cls, config: Dict[str, Any]):
