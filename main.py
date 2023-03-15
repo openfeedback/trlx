@@ -28,7 +28,7 @@ class RewardFunction:
 
 if __name__ == '__main__':
     config = default_ppo_config()
-    config.model.model_path = 'EleutherAI/gpt-neo-125M'
+    config.model.model_path = 'EleutherAI/gpt-neo-1.3B'
     config.train.seq_length = 256
     config.train.batch_size = 1
     
@@ -38,10 +38,10 @@ if __name__ == '__main__':
     reward_fn = RewardFunction(device, tokenizer, rank_model)
 
     dataset = load_dataset("Anthropic/hh-rlhf", data_dir="red-team-attempts", split='train', keep_in_memory=False,)
-    prompts = [dict(row)["transcript"].split("\n\nAssistant:")[0] + "\n\nAssistant:" for row in dataset][:10]
+    prompts = [dict(row)["transcript"].split("\n\nAssistant:")[0] + "\n\nAssistant:" for row in dataset]
     
     enable_progress_bar()
     trainer = trlx.train(config=config, reward_fn=reward_fn, prompts=prompts) 
     
-    path = None ### todo
-    # trainer.save_pretrained(path)
+    path = 'ppo/gpt_neo_1.3B'
+    trainer.save_pretrained(path)
