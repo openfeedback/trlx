@@ -129,13 +129,9 @@ class AcceleratePPOTrainer(AccelerateRLTrainer):
         if issubclass(type(config.model.model_path), transformers.PretrainedConfig):
             from_fn = model_class.from_config
 
-        # return from_fn(
-        #     config.model.model_path,
-        #     cache_dir=config.model.cache_dir,
-        #     num_layers_unfrozen=config.model.num_layers_unfrozen,
-        # )
         return from_fn(
             config.model.model_path,
+            cache_dir=config.model.cache_dir,
             num_layers_unfrozen=config.model.num_layers_unfrozen,
         )
     
