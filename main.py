@@ -32,7 +32,7 @@ if __name__ == '__main__':
     config.train.seq_length = 256
     config.train.batch_size = 1
     
-    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     reward_name = "OpenAssistant/reward-model-deberta-v3-base"
     rank_model, tokenizer = AutoModelForSequenceClassification.from_pretrained(reward_name).to(device), AutoTokenizer.from_pretrained(reward_name)    
     reward_fn = RewardFunction(device, tokenizer, rank_model)
