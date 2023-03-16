@@ -58,7 +58,7 @@ def log_trials(trial_path: str, project_name: str):
         # Initialize wandb
         run = wandb.init(
             name=name,
-            project=project_name,
+            project="stanfordaialignment",
             config=params,
             group=trial_path.stem,
             job_type="hyperopt",
