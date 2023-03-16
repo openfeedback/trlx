@@ -121,7 +121,7 @@ if __name__ == '__main__':
 
     dataset = load_dataset("Anthropic/hh-rlhf", data_dir="red-team-attempts", split='train', keep_in_memory=False,)
     prompts = []
-    for dataset_name in ("anthropic-red-team", "openai/webgpt_comparisons", "anthropic-helpful-base", "mock"):
+    for dataset_name in ("anthropic-red-team", "openai/webgpt_comparisons", "anthropic-helpful-base"):
         prompts += get_superhf_prompts(dataset_name)
 
     # prompts = [dict(row)["transcript"].split("\n\nAssistant:")[0] + "\n\nAssistant:" for row in dataset]
