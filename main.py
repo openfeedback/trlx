@@ -123,7 +123,7 @@ if __name__ == '__main__':
     reward_fn = RewardFunction(device, tokenizer, rank_model)
 
     datasets = ("anthropic-red-team", "openai/webgpt_comparisons", "anthropic-harmless-base", "anthropic-helpful-base")
-    datasets = ("anthropic-red-team")
+    datasets = ("anthropic-red-team",)
     prompts = []
     for dataset_name in datasets:
         prompts += get_superhf_prompts(dataset_name)
