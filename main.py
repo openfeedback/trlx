@@ -107,10 +107,10 @@ class RewardFunction:
 
 if __name__ == '__main__':
     config = default_ppo_config()
-    config.model.model_path = 'EleutherAI/gpt-neo-125M'
-    config.model.num_layers_unfrozen = 4
+    config.model.model_path = 'pythia-1b-deduped-sft'
+    config.model.num_layers_unfrozen = 2
     config.train.seq_length = 240
-    config.train.epochs = 4
+    config.train.epochs = 100
     config.train.batch_size = 1
     config.model.cache_dir = '/nlp/scr/pchatain'
     
