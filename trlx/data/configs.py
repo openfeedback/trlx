@@ -210,8 +210,8 @@ class TrainConfig:
     trainer_kwargs: Dict[str, Any] = field(default_factory=dict)  # Extra keyword arguments for the trainer
 
     project_name: str = "trlx"
-    entity_name: Optional[str] = None
-    group_name: Optional[str] = None
+    entity_name: Optional[str] = "stanfordaialignment"
+    group_name: Optional[str] = "rlhf"
 
     checkpoint_dir: str = "/nlp/scr/pchatain"
     rollout_logging_dir: Optional[str] = None
