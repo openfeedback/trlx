@@ -122,8 +122,10 @@ if __name__ == '__main__':
     rank_model, tokenizer = AutoModelForSequenceClassification.from_pretrained(reward_name).to(device), AutoTokenizer.from_pretrained(reward_name)    
     reward_fn = RewardFunction(device, tokenizer, rank_model)
 
+    datasets = ("anthropic-red-team", "openai/webgpt_comparisons", "anthropic-harmless-base", "anthropic-helpful-base")
+    datasets = ("anthropic-red-team")
     prompts = []
-    for dataset_name in ("anthropic-red-team", "openai/webgpt_comparisons", "anthropic-harmless-base", "anthropic-helpful-base"):
+    for dataset_name in datasets:
         prompts += get_superhf_prompts(dataset_name)
     
     enable_progress_bar()
