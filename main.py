@@ -107,9 +107,11 @@ class RewardFunction:
 
 if __name__ == '__main__':
     config = default_ppo_config()
-    config.model.model_path = 'theblackcat102/pythia-1b-deduped-sft'
+    model_name = "EleutherAI/gpt-neo-125M"
+    # model_name = 'theblackcat102/pythia-1b-deduped-sft'
+    config.model.model_path = model_name
     config.model.num_layers_unfrozen = 2
-    config.tokenizer.tokenizer_path = 'theblackcat102/pythia-1b-deduped-sft'
+    config.tokenizer.tokenizer_path = model_name
     config.train.seq_length = 240
     config.train.epochs = 100
     config.train.batch_size = 1
