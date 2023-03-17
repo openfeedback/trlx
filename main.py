@@ -120,12 +120,9 @@ if __name__ == '__main__':
     rank_model, tokenizer = AutoModelForSequenceClassification.from_pretrained(reward_name).to(device), AutoTokenizer.from_pretrained(reward_name)    
     reward_fn = RewardFunction(device, tokenizer, rank_model)
 
-    dataset = load_dataset("Anthropic/hh-rlhf", data_dir="red-team-attempts", split='train', keep_in_memory=False,)
     prompts = []
-    for dataset_name in ("anthropic-red-team", "openai/webgpt_comparisons", "anthropic-helpful-base"):
+    for dataset_name in ("anthropic-red-team", "openai/webgpt_comparisons", "anthropic-harmless-base", "anthropic-helpful-base"):
         prompts += get_superhf_prompts(dataset_name)
-
-    # prompts = [dict(row)["transcript"].split("\n\nAssistant:")[0] + "\n\nAssistant:" for row in dataset]
     
     enable_progress_bar()
     trainer = trlx.train(config=config, reward_fn=reward_fn, prompts=prompts) 
