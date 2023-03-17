@@ -109,7 +109,7 @@ if __name__ == '__main__':
     config = default_ppo_config()
     config.model.model_path = 'EleutherAI/gpt-neo-1.3B'
     config.model.num_layers_unfrozen = 4
-    config.train.seq_length = 256
+    config.train.seq_length = 240
     config.train.epochs = 4
     config.train.batch_size = 1
     config.model.cache_dir = '/nlp/scr/pchatain'
