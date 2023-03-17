@@ -107,7 +107,7 @@ class RewardFunction:
 
 if __name__ == '__main__':
     config = default_ppo_config()
-    config.model.model_path = 'EleutherAI/gpt-neo-1.3B'
+    config.model.model_path = 'EleutherAI/gpt-neo-135M'
     config.model.num_layers_unfrozen = 4
     config.train.seq_length = 240
     config.train.epochs = 4
@@ -129,5 +129,5 @@ if __name__ == '__main__':
     enable_progress_bar()
     trainer = trlx.train(config=config, reward_fn=reward_fn, prompts=prompts) 
     
-    path = 'ppo/gpt_neo_1.3B'
+    path = 'ppo/gpt_neo_125M'
     trainer.save_pretrained(path)
